@@ -1,0 +1,10 @@
+Revision history for Perl extension Apache2::SOAP.
+
+0.71 January 9, 2006
+  - fix Makefile.PL error: Can't use string ("Apache::TestMM") 
+    as a HASH ref while "strict refs" (reported and fixed by
+    Gordon Lack)
+
+0.70 June 14, 2005
+  - initial CPAN release as a standalone module (was previously
+    available within CPAN-Search-Lite)
