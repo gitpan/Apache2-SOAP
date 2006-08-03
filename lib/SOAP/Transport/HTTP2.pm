@@ -4,7 +4,7 @@
 # SOAP::Lite is free software; you can redistribute it
 # and/or modify it under the same terms as Perl itself.
 #
-# $Id: HTTP2.pm,v 1.2 2006/01/08 14:48:55 rkobes Exp $
+# $Id: HTTP2.pm,v 1.3 2006/08/02 15:55:38 rkobes Exp $
 #
 # ======================================================================
 
@@ -13,7 +13,7 @@ package SOAP::Transport::HTTP2;
 use strict;
 use vars qw($VERSION @ISA);
 #$VERSION = sprintf("%d.%s", map {s/_//g; $_} q$Name:  $ =~ /-(\d+)_([\d_]+)/);
-$VERSION = 0.71;
+$VERSION = 0.72;
 
 use SOAP::Lite;
 use SOAP::Transport::HTTP;
@@ -65,13 +65,9 @@ sub new {
     SOAP::Trace::objects('()');
   }
  MOD_PERL: {
-    (eval { require Apache;} ) and do {
-       require Apache::Constants;
-       Apache::Constants->import('OK');
-       $self->{'MOD_PERL_VERSION'} = 1;
-       last MOD_PERL;
-     };
-    (eval { require Apache2::RequestRec;} ) and do {
+    ( (exists $ENV{MOD_PERL_API_VERSION}) &&
+      ($ENV{MOD_PERL_API_VERSION} == 2) ) and do {
+      require Apache2::RequestRec;
       require Apache2::RequestUtil;
       require Apache2::RequestIO;
       require Apache2::Const;
@@ -80,6 +76,12 @@ sub new {
       $self->{'MOD_PERL_VERSION'} = 2;
       last MOD_PERL;
     };
+    (eval { require Apache;} ) and do {
+       require Apache::Constants;
+       Apache::Constants->import('OK');
+       $self->{'MOD_PERL_VERSION'} = 1;
+       last MOD_PERL;
+     };
     die "Unsupported version of mod_perl";
   }
   return $self;
