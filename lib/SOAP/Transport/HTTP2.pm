@@ -13,7 +13,7 @@ package SOAP::Transport::HTTP2;
 use strict;
 use vars qw($VERSION @ISA);
 #$VERSION = sprintf("%d.%s", map {s/_//g; $_} q$Name:  $ =~ /-(\d+)_([\d_]+)/);
-$VERSION = 0.72;
+$VERSION = 0.73;
 
 use SOAP::Lite;
 use SOAP::Transport::HTTP;
